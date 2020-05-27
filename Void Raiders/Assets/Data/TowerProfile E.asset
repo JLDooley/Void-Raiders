@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c154d4579fd45e64f9e948b57167dee0, type: 3}
+  m_Name: TowerProfile E
+  m_EditorClassIdentifier: 
+  groundBlocks:
+  - {fileID: -5387877993904369314, guid: ecffd39035c990542a35445a04b42d61, type: 3}
+  - {fileID: 3673722810935237965, guid: 0728dc72cb742d24dbaf545b883a0fb4, type: 3}
+  - {fileID: 1846653201744175015, guid: eb23f69e9cab8944aa0a629622e96bfb, type: 3}
+  mainBlocks:
+  - {fileID: 1846653201744175015, guid: eb23f69e9cab8944aa0a629622e96bfb, type: 3}
+  - {fileID: 3673722810935237965, guid: 0728dc72cb742d24dbaf545b883a0fb4, type: 3}
+  - {fileID: -5387877993904369314, guid: ecffd39035c990542a35445a04b42d61, type: 3}
+  roofBlocks:
+  - {fileID: -2423763149016875186, guid: e07ef1f8422c35e45a23cce789a47676, type: 3}
+  - {fileID: 8364062792205436496, guid: 97dbbdaac8f66734480baaf4ac103ab0, type: 3}
+  groundMaterials:
+  - {fileID: 2100000, guid: 9dbedcf2a90f2534da39b8da4e3b61a9, type: 2}
+  mainMaterials:
+  - {fileID: 2100000, guid: b0f6550616fa2fc488ef897ccfd32bd0, type: 2}
+  - {fileID: 2100000, guid: a4447cc3ec4ee5b4995ef78dde43318d, type: 2}
+  roofMaterials:
+  - {fileID: 2100000, guid: a4447cc3ec4ee5b4995ef78dde43318d, type: 2}
+  maxHeight: 9
