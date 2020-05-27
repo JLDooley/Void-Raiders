@@ -70,8 +70,9 @@
     <Compile Include="Assets\Scripts\GridTowerBlock.cs" />
     <Compile Include="Assets\Scripts\PerlinSpawner.cs" />
     <Compile Include="Assets\Scripts\RouteTile.cs" />
-    <Compile Include="Assets\Scripts\Scene03\Slot.cs" />
+    <Compile Include="Assets\Scripts\Scene03\ChunkManager.cs" />
     <Compile Include="Assets\Scripts\Scene03\SlotManager.cs" />
+    <Compile Include="Assets\Scripts\Scene03\TreeSpawner.cs" />
     <Compile Include="Assets\Scripts\TestColourZone.cs" />
     <Compile Include="Assets\Scripts\TileSpawner.cs" />
     <Compile Include="Assets\Scripts\WorldBuilder.cs" />
