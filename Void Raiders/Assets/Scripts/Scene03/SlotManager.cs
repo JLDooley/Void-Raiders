@@ -23,6 +23,15 @@ public class SlotManager : MonoBehaviour
 
     private List<Vector3Int> groundCoords = new List<Vector3Int>();
 
+    public bool chunkTerrainGenCompleted
+    {
+        get { return terrainGenComplete; }
+    }
+    public List<Vector3Int> chunkGroundCoords
+    {
+        get { return groundCoords; }
+    }
+
 
     private void Start()
     {
@@ -113,7 +122,7 @@ public class SlotManager : MonoBehaviour
                 debugSpawnCount++;
             }
             //else if ((CheckSlotType(x, y + 1, z) == SlotType.Ground) && (CheckSlotType(x, y + 1, z) != SlotType.Invalid))         //Large chunk numbers in ChunkManager.cs are slowing down the generation stage (~1 minute at WorldSize = 8). Check to see what impact removing the 2 unit buffer zone has.
-            //{                                                                                                                     //RESULT: generation time reduced to ~30 seconds at WorldSize = 8
+            //{                                                                                                                     //RESULT: generation time reduced to ~30 seconds at WorldSize = 8, further reductions may be achieved by using Quads instead of Cubes
             //    Instantiate(undergroundPrefab, new Vector3Int(x - 8, y, z - 8), Quaternion.identity, this.transform);
             //    debugSpawnCount++;
             //}

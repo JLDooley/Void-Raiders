@@ -5,6 +5,8 @@ using UnityEngine;
 public class ChunkManager : MonoBehaviour
 {
     public Transform chunkPrefab;
+    public Transform treePrefab;
+    public Transform playerPrefab;
     
     [Range(1,10)] public int worldSize = 8;
 
@@ -20,10 +22,12 @@ public class ChunkManager : MonoBehaviour
     [Tooltip("Perlin Scaling Factor\nAmplify the value range of sample points to increase gradients\n1 = Min 0, Max 1\n10 = Min 0, Max 10\n100 = Min 0, Max 100")]
     public float scale = 10f;
 
+    private int treeCount;
+    [Range(1, 10)] public int treeDensity = 5;
 
     private bool chunkSpawnComplete = false;
     private bool surfacesTallyComplete = false;
-
+    
 
     private void Awake()
     {
@@ -43,9 +47,12 @@ public class ChunkManager : MonoBehaviour
 
         SpawnChunks();
         yield return new WaitUntil(() => chunkSpawnComplete);
-        SurfacesTally();
+        StartCoroutine(SurfacesTally());
         yield return new WaitUntil(() => surfacesTallyComplete);
-        Debug.Log(surfaceList[0]);
+        SpawnForest();
+        yield return new WaitForSeconds(3);
+        SpawnPlayer();
+
     }
 
     private void SpawnChunks()
@@ -65,28 +72,71 @@ public class ChunkManager : MonoBehaviour
         chunkSpawnComplete = true;
     }
     
-    private void SurfacesTally()
+    IEnumerator SurfacesTally()
     {
+        Debug.Log("Adding Chunk Surfaces");
         for (int i = 0; i < worldSize; i++)
         {
-            for (int j = 0; j < worldSize; j++)
+            for (int j = 0; j < worldSize; j++)         
             {
-               for (int x = 0; x < worldSize * 16; x++)
+                //for (int x = 0; x < worldSize * 16; x++)              //Not crashing, but very slow. ~1min to process one chunk, ~15 minutes to process 4 chunks
+                // {
+                //     for (int y = 0; y < 40; y++)
+                //     {
+                //         for (int z = 0; z < worldSize * 16; z++)
+                //         {
+                //             yield return new WaitUntil(() => worldArray[i, j].chunkTerrainGenCompleted);
+
+
+                //             if (worldArray[i, j].CheckSlotType(x, y, z) == SlotManager.SlotType.Ground)
+                //             {
+                //                 surfaceList.Add(new Vector3Int(x - (worldSize * 16 / 2), y + 1, z - (worldSize * 16 / 2)));
+                //                 //Debug.Log("Surface Added");   
+                //             }
+                //         }
+                //     }
+                // }
+                
+                yield return new WaitUntil(() => worldArray[i, j].chunkTerrainGenCompleted);
+
+                foreach (Vector3Int coord in worldArray[i, j].chunkGroundCoords)            //Much faster, ~25 seconds parallel to Terrain Generation for WorldSize = 8 (64 chunks)
                 {
-                    for (int y = 0; y < 40; y++)
+                    int chunkX = coord.x + 8;
+                    int chunkY = coord.y;
+                    int chunkZ = coord.z + 8;
+                    int correction = Mathf.FloorToInt(worldSize / 2);
+
+                    if (worldArray[i, j].CheckSlotType(chunkX, chunkY, chunkZ) == SlotManager.SlotType.Ground)
                     {
-                        for (int z = 0; z < worldSize * 16; z++)
-                        {
-                            if (worldArray[i, j].CheckSlotType(x, y, z) == SlotManager.SlotType.Ground)
-                            {
-                                surfaceList.Add(new Vector3Int(x - ((worldSize * 16) / 2), y + 1, z - ((worldSize * 16) / 2)));
-                                
-                            }
-                        }
-                    }
+                        surfaceList.Add(new Vector3Int(coord.x - ((correction - i) * 16), coord.y + 1, coord.z - ((correction - j) * 16)));
+                    }       
                 }
+                //Debug.Log("Chunk Complete");
             }
         }
         surfacesTallyComplete = true;
+        Debug.Log("Surface Tally Complete");
     }
+
+    public void SpawnForest()
+    {
+        treeCount = treeDensity * Random.Range(worldSize - 1, worldSize + 1);
+        
+        for (int i = 0; i < treeCount; i++)
+        {
+            int index = Random.Range(0, surfaceList.Count);
+            Vector3Int spawnPoint = surfaceList[index];
+            surfaceList.RemoveAt(index);
+            Instantiate(treePrefab, spawnPoint, Quaternion.identity);
+        }
+    }
+
+    public void SpawnPlayer()
+    {
+        int index = Random.Range(0, surfaceList.Count);
+        Vector3Int spawnPoint = surfaceList[index];
+        Instantiate(playerPrefab, spawnPoint + Vector3Int.up, Quaternion.identity);
+    }
+        
+
 }
